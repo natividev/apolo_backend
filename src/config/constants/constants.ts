@@ -1,0 +1,1 @@
+export const PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE: string = 'P2002';
