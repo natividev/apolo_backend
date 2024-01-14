@@ -5,14 +5,19 @@ import * as argon from 'argon2'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
+import { LoggerService } from "src/logger/logger.service";
+import { PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE } from "src/config/constants/constants";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly _prisma: PrismaService,
     private readonly _jwt: JwtService,
-    private readonly _config: ConfigService
+    private readonly _config: ConfigService,
+    private readonly _logger: LoggerService,
   ) { }
+
+  SERVICE: string = AuthService.name
 
   async signUp(authDto: AuthDto) {
     try {
@@ -30,11 +35,17 @@ export class AuthService {
       // return the saved user
       return this.signToken(user.id, user.email);
     } catch (error) {
+      this._logger.error(
+        error,
+        null,
+        this.SERVICE,
+      )
       if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException("Credentials taken")
+        if (error.code === PRISMA_UNIQUE_CONSTRAINT_ERROR_CODE) {
+          throw new ForbiddenException("Credentials incorrents")
         }
       };
+
       throw error;
 
     }
