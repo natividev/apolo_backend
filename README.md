@@ -74,7 +74,14 @@ Nest is [MIT licensed](LICENSE).
 
 
 > [!NOTE]
-> Useful information that users should know, even when skimming content.
+> 
+### Pre-requisitos 📋
+
+_Que cosas necesitas para instalar el software y como instalarlas_
+
+```bash
+ Node version: 18.16.0
+```
 
 > [!TIP]
 > Helpful advice for doing things better or more easily.
